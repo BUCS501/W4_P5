@@ -3,6 +3,7 @@ package model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,12 +13,12 @@ import java.util.Set;
 
 public class Hangman {
     public static int DEFAULT_GUESSES = 6;
-    private String[] wordlist = {"CREEK", "CLOCK", "FIND", "JAIL", "BAR", "ACTION"};
-    private String word;
-    private boolean[] guessedIndices;
-    private int allowedGuesses;
-    private int leftGuesses;
-    private HashSet<Character> usedLetters;
+    public String[] wordlist = {"CREEK", "CLOCK", "FIND", "JAIL", "BAR", "ACTION"};
+    public String word;
+    public boolean[] guessedIndices;
+    public int allowedGuesses;
+    public int leftGuesses;
+    public ArrayList<Character> usedLetters;
 
     public Hangman(int numGuesses) {
         if (numGuesses > 0) allowedGuesses = numGuesses;
@@ -26,7 +27,7 @@ public class Hangman {
         Random random = new Random();
         word = wordlist[random.nextInt(wordlist.length)];
         guessedIndices = new boolean[word.length()];
-        usedLetters = new HashSet<>();
+        usedLetters = new ArrayList<>();
 
     }
 
@@ -38,10 +39,10 @@ public class Hangman {
         return leftGuesses;
     }
 
-    public void guess(char c) {
+    public int guess(char c) {
         boolean correct = false;
         if (usedLetters.contains(c)){
-            return;
+            return 0;
         }else{
             usedLetters.add(c);
         }
@@ -51,8 +52,11 @@ public class Hangman {
                 correct =true;
             }
         }
-        if(!correct) leftGuesses--;
-
+        if(!correct){
+            leftGuesses--;
+            return -1;
+        }
+        return 1;
     }
 
     public String currentIncompleteWord(){
@@ -90,7 +94,7 @@ public class Hangman {
         Random random = new Random();
         word = wordlist[random.nextInt(wordlist.length)];
         guessedIndices = new boolean[word.length()];
-        usedLetters = new HashSet<>();
+        usedLetters = new ArrayList<>();
 
     }
 
